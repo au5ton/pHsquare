@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> -->
+        <title>ph Square</title>
+        <style>
+            .square {
+                position: relative;
+                background: lightblue;
+                width: 300px;
+                height: 300px;
+            }
+            .corner {
+                position: absolute;
+            }
+            .corner.topleft {
+                top: 5px;
+                left: 5px;
+            }
+            .corner.topright {
+                top: 5px;
+                right: 5px;
+            }
+            .corner.bottomleft {
+                bottom: 5px;
+                left: 5px;
+            }
+            .corner.bottomright {
+                bottom: 5px;
+                right: 5px;
+            }
+            .corner input {
+                display: inline-block;
+            }
+            .log {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                background: lightpink;
+            }
+            .log.tape {
+                border-bottom: solid;
+            }
+        </style>
+    </head>
+    <body>
+        <h3>Fill only one box</h3>
+        <div class="square">
+            <div class="corner topleft">
+                    <p>[H+]</p>
+                    <input id="Hconc" type="text">
+            </div>
+            <div class="corner topright">
+                    <p>[OH-]</p>
+                    <input id="OHconc" type="text">
+            </div>
+            <div class="corner bottomleft">
+                    <p>pH</p>
+                    <input id="pH" type="text">
+            </div>
+            <div class="corner bottomright">
+                    <p>pOH</p>
+                    <input id="pOH" type="text">
+            </div>
+        </div>
+        <button id="calculate">Calculate others</button>
+        <button id="reset">Empty fields</button>
+        <div>
+            <img src="data:image/gif;base64,R0lGODlhXgExAeYAAAAAAPzgsrO2tXt7e1paWkE6J5C96Kd9RyEhId+5hubm5kB+rgs9aXVgS6SkpP//4tbW1jMAAAAjUJmZmdTj8LrR2Rtjk2NBFHeHsplmMwACI8O2qNfOwlguBqmIdoODg+v1/bjf+UVLWv/04lSPvltmcIu74Hxtbf///xITFU1NTXZNL+THoLfU7nNzczAkTXmm0rORWTMQJDMzM7SakBdNepmZmcXFxd7e3vHgx9Xt/sWmga2trVooLSttpS49T2Cj0f/xzwAZPzQjCzAZAJ92SaO9zCMtSKzB1lZ/oAwCAm1ra/f5/Imjsu7j23JNIO3Uv05ppl0tGL+/vlxNQitPcP//87qokIyMjDESAKTM8PDv7z1lhvHSpNq4oTxTb8zMzJRmS7+nqFNrm2aNtsXm+g8lWksHAKeEWKGqtJJwZggPQC4nK9v6/yVFYf/qxEA8O8yZZm89JW99kgAAFY6CeWZmZpGiy3FVPVqHsoyTokNDQ//087amnlBng+z//yH5BAQUAP8ALAAAAABeATEBAAf/gCiCg4SFhoeIiYqLjI2Oj5CRkpOUlZaXmJmam5ydnp+goaKjpKWmp6ipqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPExcbHyMnKy8zNzs/Q0agjYIQKFNLZ2tuHDxkMf4IjVCbc5ufRXX7hVl52Bujx0CMbDkiWVvVTILQB6yhQIHiAJ6/gsgRs9NxD4aTOkiV6+D1Ao4LAHRRXCBBosgUChC19JrAp94hDAxiRTKIctGPJRT4e+fn7M2ICmAZkmBjceSzBl0EJXhhRoADNizIMz3DZgmLLEwZboAyYo0MQHpKNrHgg4gOSVq6D0HBRgAdGkDoDsL0Z8+esCzhf/6rynCvMZ7gAEbCieBoOD5lBRSwYenA1Ep6uhPhsmFLBiYAKhg4LClJAC4oEEtoMshLnCGRBdQjSHe3LLooMEsIBBWB5xUoUBwQXIow1yImHuJeEKLQC8aARaACQCDDSUG9BCdZUDaDBsiArIT+jgICNtPVdpuWAIxRAyd8nX7CILyCbEG1CW9Kr36KT0HFDRaoIWMgbcZw1mgPIEH29f7Ds2w3ShRJA7OWHAAiuUN4g54kzBYIQCiDXIO/NJsUCiLx3X377+echMKbFoMGEl9Gx2woFChLbYIWJM4F4MGKBlHu+ETJCHSnsZhxiySHVxRo6fiikLqYFkQWGgjwgB/8XOuGRImwLJtniI3ggWYgYFKBRg2qEVDnZEPDE4QaXQ5ZZi2kAwTEHglSs004EbmADxQUSSCelXoxwMAQD1T0nFgrdcUGinnwKsgMXAlDBn5mMxoKmIDR88MFCVtAgnhEobCBeGrNNucgWOHjgggtNEEVUDmrMgcMGLiwxlKmikkrUFlcsgcQWpuaqK1HtNeorKD71io+nigiwxACSDpDbEpIu4YKkreKG7AfKPoRstMtm+5ACv3brSQJHTAHBJRxsUACe3qabTQ5YfHBRJZVK2icpYvCj7r100TMBpopMoRoHEzgwL74Ea9MFG004oMYeBNzjgQoqpOGBHSrY4UL/GRw4cIGVBXecjgjh5BBBTiiM0IEFTDCxBQ8UMCUIGkl4LDM0XYig2QM9iLaClfUSAvPMQDNT8809OIeCl4IoIOzPQTd9zNAoPCDFF5J+MATHhTDt9NbCQI0zGVOEXQDWPsfMdTF8CEuw1zlTSHZYZp89zA4YyFxzVTjr/PbLccsdDN1228zHDkpwgY0XRDBgZ9l+z123x0OPQMMEE7SAQkgT0Jd135G86HLjqAAOuc2SaC0JAQCkQMANoJckwA1gxB62vY7BLru4EapxIIQDd3twGosrAsEUO1diBwDIAzADFtXI4oS5CESfxLiFODZF7GA8WN0IYWN/gwDU96Kp/xTJ+4GFXFBgcUHy4QkQIx4ixGh5KrvWb//9+Oev//4KcOAQBjjgHw2c9Sr+6Qp1yUueChzALVfQIAsA8IOk1KCECA4KCytInhuwMD924UGDWNBcL/ACgBoc4g1DAECACOGFx7UCC9qKoQxnSMMa2lBbybrhsaClw2yxIYEJRMAEWmGFIqhwRuIIgwpJFDXyZcYQVljfGpASBAdY0QFGUJst3nAGAHAuSeurgRZF17pOLAGISlhdA1lhRDNoxhAZWCIhrCAHAFSBTIOI4xPjkMAn6oKLXuxGGMfowjJu4njIW17zXLED5C1qEAGAYBTMQ747HsKIEqhK+mB0By3WAv+QX4zaIA1BRkNqQgVKWILSYmEyAPjxEHHUwPyaaEc8CgKTTPQFKAVZQi06oXemtAQYwuco5O1NEHwEgJWkVstLujKXvdjlYEYZzHMcAHmvOQQLKhggZloSPs8cBiDzgIgn9LKa5qAjAOjwSO5EAABTTFIlEXHNTIqziymYgT73qc8KihGd3GAmOxURhA6sU0fMzCc/94mAcAoDkEewg0QnKlEinBOg2hBoOwfxBoNqAKHkQwBFKVoAhwZjnOW8KEal8YD10QFdhCgoAD4qTzvS06TAkOZsqLlSacQRANk0BAndWNNvFgKX9wzkNFXaU2jEAHnkTMQ2AVAeb9oSBUj/fWgXQ9lSpjbVGST8JyKSiRWrOtOeWlXqTr3Ki899tRGxNFohoqhCe9HSqITI6km3egi6irUXPMCCEoj5VoKmEGWHSIASZEnJZoITrcEIQhdrxCCDmpAXECDADJJH2MJK9Z1RJQQLskCHoFqBfCskhB7f+AtQGXGmRsBBe0D11HXeAQd2pQUTsIDIBLrVs4pggUG/0IKUOaEBABCCXkBFOOSRAbeC4AMOmguAPODgt7qolUY0UoIBzMgLS9iuRpYwS1nwYA9ATOAAYsTe9rr3vfCNr3znS9/62jdGrHvFCNSQwuQhYAxMBK94CbAE5+TgBAN2CeimQICGphcAE+CB/4QnTOEKW/jCGM6whjfM4Q57uMOdZYUVwjY74DYisCkA4hpNzOJPbGEAKuBsi2ccCjDwAAE4oLGOd8zjHvv4x0AOcim8wC9B3ACaQh6SE/KLiyDIwTddeEGQkjwXJ1BnEdQQhBPAINtasMBsIxBDCaZMZYMczAXyq5R4KpCDD5zADu66ggsK8BdIBKFykbjzLNv8rkJ4wWwceDGZyywPFnzhD1YgXBIOl4UaUIB7fcACY1QU2kYEAblPsjSmBdEFFQgAJwyRMD/+DCgs8EAFTfAkoc3BAtLhzGhUIMEglpzXSjfiAQXINENwhasVJynXgniCrLuAgDLkYAIRQQELyP95bCzAgQxXXTU3Wq2ZIBRtEFSwUkdqvRlLsXdxuNZ1DJRgASdcCI/hRsEbOhQEGWR6BHg4wixdMGhps5p01iYDhAoga0QUodIcIDGJB5buQhzADWDQgxbT3YXmNLHSI7jBDfqkgNza+xzURkEQpGA+8Qyh35es9HrUo7aCz1EONbD4rwvUcMs84Ay2vjhpMm5tWB/z35vxQLZEaHJC7CAF5WUQsPXjchkEVeajyfirnxPrROAcEj0XBAeMEAOizgbYD+hAgQKAgHojnSfUtkIXRsYPJwzBAiq/ZcwXkYMj5ZYFJfjDA7KA9kJAwe2XqQIOwjCGr/eH2kFQgwpKoAX/rWikyEddeyIMb4fyxmAdtiEA4hk/Py+Qyu9/J10knt4I3rpgAMqi6OclCvoljPTzobfYqEbKeoouEvPSYMEPWvaI9GRA8YdIme53T4jd+/73wO9V2nwP+23koAF2KOQirmAHAsA0EjmwIjAfMQIrZrH4rTu4wKT+Zjt0EgXHZ1gLrCB4FRS5+h44AhKxLzc0hDYMbmjBFpyAhy9oZuww0EkQrsYELwwg1eq2B+vHflzDNHGgAUj0cpNUc78ma0tGPQEggAToNz9jBSdjcELQBtYWJPwmVBI4gWfzM5KFNXFAB1qwcRIkKQiga4DygSC4NSJ4BiT4UdaGASTGBiAH/0ku+IJNwzRPISyo0RY9oCNW0IGFEIEDuAwKIACQ4AA5xoOdwDTbhBVQYHQaN4TPAWxHuIPM8AFwgF2JsASvB4WZoDVXAAcYIAA0gIYl4wFeRAH5oASOtoVJqAxwAABgiAguEGJkWAmmUxPiIRd3RjllUCmUszhI+AxgkGIf8Ah72Ieb4H6a8AZcqAw8gDx74Ih8CImSEB8CMH2OwD07oH7PcIeps4mF8IjFIACqdgg4wIROs0lBl2fi0QTRZgyXmDwE4AiqOAxbMANT8Ag3sASc2ApnlDwpwIuouAsOAAAu8AhgMADFuAo44GDJM0SM0IvC0FAzkIeGEI3TqAoQkP9ez5iNy5gLEJBiAOAAjgCO4YgKpghET6gI2ggMWJA8M9CO0viOp3ADYYMFBBA2AuCNg1CPTYEDCJmQChlAsYBeyIMA54gC7siPqAABjaiJhlBbD4Y8VdCKpiAAQMQDjTCRFGkKN7CPykhKSLCQC5kGaYcKDpk8cDCSKFmSpXCSkGCQG4BkKGAFN/CSppCO6SWSi0CSNjkKOImRwXADMwAHcJACTgkHF6kIRnmUoZCUKTlXdSBXueACHlkIVWmVn4CVjWCQVuB8vaBK0FiTYgkKZGmOhyAGdWgLaqmPbRkJaVMIeYkIb7kIBskHifCVqlCXNHmXkJADPAABCikGPNn/l/TYWSxgAiOXHlhSC4TJCGFpmIjwBg3wEAS2BCXQmGzpl5C5kfFEC5dZlKOpmYjwS4JAPU7AWobgmIlgkCyAARK3AXMgcTcgI5bpa1S5mqy5eGAgmLSph53lBKrxAH3GB0DJCqkZnMPJCFbWk83DAaKZk6gYBE2gC9GZCJk5nRyFfM0nUXGRCMd5CAYJBXLxAEXmBDwJncAJnsIpnloGGaaCAtiJnvWpnpD5AxpBBUewXSIwl8Y4n4gQnvZZMgP0EGlwiyiQnoZgm2wQlXsQlUfxm2uplzjgER76oYopmH1oBWLAKYaSBq0ooanYWVBQh1AAivK5oaJVQRuZXPHJ/4k5sDhTkJ1KeQjuIFEG+grfmaBs6QVpwJIKyQNByonVSQj7yZf9OaEhRhgLNQciWgnSpZcIOghDeghGyQHB46Qwyon50CdQ8KD8qZ1Q5AFUMQiXdnScwAdoAXqgZwciZAhd+o1RKp45UAdVcz6KoKKEsJ56MBgTcKOWIDlhMwFpcAM0EKaEkKdgyZYcEJFi6ZMewQiCWpAsOosoUJmh0B4QYC9fKamEYJQvuqCFICppEah7OqidlQN3ejljegkuA11NsQimOggTyQIf8BCToqoosANfQAFQ4ABAuamCYJAj4F1+hgFXOgl8QANpEFh6EFiQyqVbqqezNgWTMwW1Kv+WGzA/EBAOaaesKGCQyjYDYBM2ePADS3oJfOAB4hEwDjAA2SoIuyoIqGqpYskCKvAQAUsAnoqu6goQGYQ8SYCo8tpA1cdA24oC+yqRbOkEEWuYW2YqOAAG0GSwyUmqKTNHqwQKObAHTcADh6qrF8urbBkEdTgC86iZHLQIHmsIVxCf+xAKtykOzymxK8uvbEmJEFMRQwsHz3eUZ3m0RvaqnJqRezC0UDu0ftCzlmAbWDABSzAHdYB4hTCxRvkGcLAHYosAYnuhSmuTDuCphFCzhZAAKlC2cFu2dQYKTnC1E4AgNDCr+vqzFFsIbzBLrCgO/sqabFsLNACneMq34fn/AC4prBmhEX7QO4VrCHwABnaVAy7AtaDgAbgXqYrLliNgL1bQuIJAkCWZA1SgAlEJB1SQBMIyuYXQSmsADytABlfQZ6HgmozgtWwZAHrgERyABRXgEWKgtzb5APsSux6gObBLCFCwBAiiBwpABSfoAgxbCrxbCEFgUek1UJqJvCrnBbjbvIPgBW8EAVBAvQ9AAF7HCRyAB0oQv0dgi4kroxxVKrtSvMPpBTNwrRPWACJAIuQrCFAwBzxAAyUAAUO4vvF6CTvwAw5AYQ0wBhaXvaIFqToBAddbjFBAQfG7Bk1gcQOMTEqwBkiABiIgMX4QrZPAnYewASJkweVrvCgw/wUNrJkjfAhSccOV8ABbWwg5MABBJ8PIEb9GfMTxKwQbfJc5rJ8IQrWcAAVwoLpOeaHK57P2Kw48cEVcfEUCAKF3GbMjTH4QBAAiQMOf8LgEMAdpR8TCarPUQqelN75Mu6ybCHcz4gQfsMTY+7mJcAVp4C8AoQJzEK7TeAB0ED2KHD3ZNMJeMEtvcAKGfApuTAjmBABjwAS3FwQDIJtW6QTBU7m9MsIj0ABvuwdX8wpNqq1ZTAjHpgNMsAEUEAYFspVvvLZ1nK6oOK+HdwpWgAcIkALCPMwpsCiVTMDzU6lhgBJqgLj22cSFwMKW4AEl0F4nEMN+fAgjcAIQIwJTcP8BKNEAXCmszbsDUTu0BWoK6UG5vnbMkwHALWB5PKAGXwDFOJzLBjmK56wC6Yya2ZwVEjKcQRCMfeDJS6umjyDNpODOhqIRACieb4CiHtCx+LyMVoAFGwULDB0GZPu0c2DQdxnRTDDRh9DED/BxuODOvmtXXoDGNinSJD2bFb0IJ31MohAEEMAHNxBt7pwDevBGrTbOIS3RFI3Qi+cAQk0KXWAENwLSWGyXiLADBRC/CBBKQz3SRd2jtrDUI4AFPP3P3SBx9lySAYCidZDVWXkLXO3ViODGUIAtz0ItdiqeIzAuHHCuM40La/3VrUxsC6VPbJDRqjrCTgACfMC3nbD/120N1oKgagrNxHmdWCHQBYW6Cmvt1AwtCOJ7y2mq1X4WAmfKCjnKBzzA11CdCBlwWcOp0wLX2iXmyKBtoreQ2aeh2qwZSTU6U5YB26Gd0oxts905nWcafCnDAZbD27JNl7/N2TnAZIeQA9jA2+yICse3z1L7RrQtrCHrqkZtCF4Q26nAAlNs3fw8I9m9oFZwAoIdoZEdmKngBfnKATriznzAFIjNj1bQAGcLzapgsYpQcXvbygLC1Gz9zGPK36mwzo3gzoo9nc6JCG6F4KgApo7A4AQOxjYZBHowTCBaorjc3QQMTfA5Coe9GACusgLOaRcunlm3kXPL3iCubACq/xHNpxH9HArgRQUEprn1e9qF0OAC3QQUQBQTUAFEMXUf7tnKVqFwMAMIgKE8bAmpuuDLjQJAzppWYFcsMwiv294EPCPuOQhTPgqVWuFVfuXiaQVbXtJerr3BPQ0vqTbubAUpY7pHGQTSsaPR9XrNOwKqEQTN+diS8Ab4qyv667kpfssPQAUMxQaA3chtzgJ3cOTSSxQ0MMlVy71A9FJdW+VvPAIEMFGmJ1FUQMcxzgKmGeWV4LseKrzEi82t/OC5x5ojAKnE1LySHkDqoQAQcOmlELrPQbq5iug+DiiFniswLJ7p65RsLNMx7ufDOrSWsZenwLg86cbb+2Dey5oxgP8A4vUCQUe+I3ABM04AcPAPpfC3gxC4JUNYbuy7scMBkxI7ebu/YzAvXuAHstm8fKAG9BtdzWwKYFu2HW22nd7KwN6Twm7n72gFExC+zNvmUIC7z5GypBAEUEsARYsnDM24Y82P7qlFvX3QSg4Fngqqo7DZlJtjHFAdbqzugsDuMIvlPKBFSD4IzSurh7B9pEBkxB3L5s3YQgsxbLDxw0k3woK569fnasCVO0AypDBVNarEAV7sAy+2p2zww1kER0A5E6AGCIAn5AsFBeAHXl8AbsDHlRBxri1wxVn1hUkIMB+7g8uJfMAHVnAFQyDMhjMIeTnAQVAEw/zvGlrshbD/AxpB8XcJBcGYCDlw3G0ODHOeAXTglCqQBBj+jlBwAl3cxR8A+TFeCPWArLNd5VyHFR6QrxT5BlJAzK6fAkKwGyPsDamTAmes3InOyVwC3ZxdCCOcABpAEl3Q7P6c6PvlBxNmB9da5L0P40rOEn03CDtZ+HFvCCPQ+kacAvHL6b1P2FuLkMGrmOAqCww9n/7d/ZHPae+UXjQVC+fd/M7+/NElLiAKASgvpJ4O/52d1sPw/vqP84AwgDJIWGiI4gJxuMjY6PgIubikEDkIJliZqbnJ2en5CRoqOnp4g1mZSKq6OZl5uQobKztLWytqqplqW9ta+boLHCw8TNyIm6lb/0zaG/mr/AwdLV15jKo4/ckM6Yzd7f29Wx2ZDF6p/chdrr7OnikOSd7OeO6YLn+Pv/7+GJ9PSN/Inr+BBJXtW8QkoQswCZkURAGQkcCHFCvGOmgITIqNSjamUPEw4qKJFkua9ISx0JY9AFq6FBCSkq9TJ2va1JSykAuXLrfEdEXzptChpYIyUqCEpwuKIg+RJAr1ZM5CCHhOYCqzmdGoXE1OJeTAJYKKTQfhSIEAAVq117q6pfh10BY2LR2QzdpoiwqeAGb4fAuYYNxBe5WAuRvpA08lUwI79jcYBRgAIBFD2pLCZYrHnO9NWVrpLGislTK33No5NTYFbSNhwWGxLP8hAi9V274tTfagKS3Z/MUNPPgu3SgU0LUrPLlyWHbwPtrrfLn06Zo+/IbEQ4VD6ty7r9py2Lv48eTLmz+PPr369ezbu38PP778+fTr27+PP7/+/fz7+/8PYIACDkhggQYeiGCCCi7IYIMOPghhhBJOSGGFFl6IYYYabshhhx5+CGKIIo5IYokmnohiiiquyGKLLr4IY4wyzkhjfBycYIcdc1CAghVowLHHHShcQcUPGGwXyQhXwKFFIVac0CQnHsABBwYoeEHFHnP8UaNbO6yBREI7yNCkFVJEsV0GDCCZZB0pwFBIHAAY4MkTVWwXgwRtdCnUFDqwMAGPXURgQiH/GeiJAh5kEHJADZw8MAOcgzjhARt0QgJFC0FMICQKRURBSBwMcMnnST7S4ccGaKwRwgGIEtKFEoXiAQQhMThKyAh15MirHVESEgQbkloxAQRSFPoIC0NI4IADMiThKaiDiEoqinxs8du1SGJLyLXXDRTEEHkMsgIXT4xaSABKjJvBDwO8W4AFnAQrqRcmPHBsJK7qgEICGuhwwBHvDkAFukRBsQSvLSyC7bZbbHctCIQ0TBELdlCBVgo/2IFsDidgnNYRdjRBUbDIxiHCCmZUi4K6teIxBhgyNyAvIVb0MUHOOi9cCL0oOKEHE/heSsgGPPCARCEH1BwEmQd8ITMY/0UYfJMXUvQ1wwxDAHBE0oVcYUcBGYvgQhmDsLCE2Gpt7DVFb2ytwa+5dgAAHciWzMbJVeyggdmEJEBHCIkuOkijTorRbOIO8AyssP2KsEQDKXzBuBVyKKFEzYXj2rQWB0iLArVCxQCABEbYfAURdBBeSAJJvVpIF1kAsIbfJckBANVKAyAEvxUFgYCkeOTxQAdc5NqDtIoSgobmmTyQ9yDX5jAEDGwycgADZx/xx+ehan/TAaX7XggUqpNgSBBnADDGIlZcAACuJVkOgBssM8+77Q+F64YDHvixpxxQoQTNosIYmGCFDUTgCBVAAQekIITTZYIPOwAAF3g0iCBk4f9ujkCDBvTgAAKYwAtniCAKoPAEDdzhehXZgRLoQDRDyAmGhXjD+qB1CCs8IX73ewj97LcI8QlBfwUJwgzIMIE0sGwDOeNZAnnggKRxoFkSrMQI+gBFDPbIT5FAQw1wxiMvUPGEDuCBEjeBhQFERxrhyl0PM0g3BkhsEDYEAA4NoUMemuSHbxQiEQkCvRjKIwbOUwVtKAOTbsgJAOhrRAZacrc63tFJO6zBG7+xASpowQo7YAMbKOck3AHxEH60SAJSsIA5ysMJK5AA41SxBJ6wYQA3sIWSRNCGEaABAWyYA/keScNGLNIHhJCk+yp5yWlYwQMFAIAGWlAEzLUkbjb/EyUjSDfEaeAAAtzspje/Cc46vAsJ4CynOc+JznSi8woucEET1AnPbx6SL3CYAGxgMYIwbE0COMCdS8xgtuLRTnCNcF39SFXHcS0CmesYgRrgoAQNLAGATIhDUgxGPwR8YKMc3Sj8sikNLLRzpCQtqUldwNGTqnSlLG2pS0s6gJS+dKbtpAtfenMVWEChAc0U2ZHy2RJivoEI+XPEoLi2JxTU8Qcd7ejWLNmON8wOTaFqybD8mZasZjUzIOVQLHmSAjuA4VurcJ0GJDUIPDgzBEEgqhAIyoijHiGpdVyLVtOSFKiyI1zUBNbWjtcjUbIQBdj8I4bs0JIU1LM1s2CB/xJghwLHAgAGbeUdXBchV7rekBEM3SsR+kqIRwKRj0EsaodUkIIBkJUWjoXsCOiWBzM585WHYEEEDkrHzeaws+toK2gL58bA4paUpuUQBO4pjNYmdRAPgB+odhhMRlQQAAsopm7xyFt1+FZuhMUtaYnb1VJVQrmUBMC4plvdRqChbr8y5m716NnfouCRgP2uIUop3kyQlxAChVMQ4njJ5sJXqdctr157qzq5yRZZ9i3EesOb32Q9drlKjQBIXThZRsjpmTUssM2yW4421gpWSpAjIXC3stL2LsLjjehl5QS6+Vr2EFDIAh1GDKz1xdhm8JNfb7cmhCjloAMcpiPcuP+Lgv/WjYMsboRk3eA3FmTBDBS2Qhh4lwabecDGaP3b68gHq9nVrh1tpQMcUuBJJQT5bBfL6sY69rGsioxkTXayEtYgtjS7QYuFsBoAeMkGolahgV8LW1bJFmVDp4VtCNZACLywhCVggGUPU8m22FTpOjOitX/YQaQ75eRIL6Fsi9BWtzKNAlSbWrufRfJQBLBaA+13OduFyhYUYAeWMBZBs1bOUOVbkwnYtCW7PlACSkfh5MQqwzVRwBRUMGyXrNFAG75scDyGsRQcYQm0fQgWTHNTABBA1OQut7nPje50q3vd7G63u9+9hETCAtJiS4EIfJkcPihAAQm59WAJogD/BywB3Dy5wb4PjvCEK3zhDG+4wx8O8YhLXOKxDoW+H8YEf7OINXvhCXI1DaApOAABSSk2yPvDBFxP++QZwtIMxtCGHDRgBiUwbCM4sIL0EmIHk+SEF3BkBwxILJ8zEEHSpvQDULOcInFYg+9YAOxHbEAKPn5DBAqpiSK8gEc+OoLg1Dfi92F96e0QwJ8mwLMEvIBUXXgrJ7xYiEwC9hFTCAEUJuA1wF32AjUQWg/uhgdikh0fMVBCFTbggRTQKQFu2E4A3E4IL/QqR2S4XhHk5wUkHGDujdhBFtzQBxq8CQVP8HHoAveAHhAt8IPHxwiGIHg19UsGI20A5LPOOT38/yEDnGeEDqEag5WdoffHNoHlvjDSIei89ex4QAFGrPY2qL0CMtvB7R2oM51VkRCX71EfBMd7Q+SgWWmYoxVyPoguyKAMHSgk4AyQejJE7QLLZ746nA/9taudVI+/7BQV5wDbNwjdFwQEkCNDcARWsnMbwSqDcH7ppX4AswYUdgC9k3qrJ3j2tw7O10hhACr7NwiPZ3OOsDQTswUZ8AWq5HsrIHgx8AVMIFWNdEIyACdWoHqEgAf1p4Hf4HxH4D9foANQsAIAMGkjUAR2BGaQwAEdYEKhVQWRsAJC4D8iQFBQQAV+4D97YCUj4EJVsDAbQARmQGg7CA7OlwR94ABcAmAFDiAASjQCbOgASfgIHJAGPLB9HDCGjWAFgYeGyYYzE+A7VyQAi4MCRsMDeUiG3WAFzwcO6JeIVZMCXCCH0MABQ8AAfPaIJbEBzYKJ0SBGDtCJmSiKo0iKpWiKp8gIgQAAOw==">
+        </div>
+        <script>
+            var button = document.getElementById('calculate');
+            var reset = document.getElementById('reset');
+            var H = document.getElementById('Hconc');
+            var OH = document.getElementById('OHconc');
+            var pH = document.getElementById('pH');
+            var pOH = document.getElementById('pOH');
+            var fields = ['H', 'OH', 'pH', 'pOH'];
+
+            button.addEventListener('click', (elem, event) => {
+                let result = fieldsValidated();
+                
+                //if our fields are valid
+                if(result.valid) {
+                    //for every field..
+                    for(let i in fields) {
+                        //..that isn't the supplied value..
+                        if(fields[i] !== result.filledField) {
+                            //..calculate and fill it
+                            window[fields[i]].value = calculateField(result.filledField, fields[i]);
+                        }
+                    }
+                }
+            });
+
+            reset.addEventListener('click', () => {
+                for(let i in fields) {
+                    window[fields[i]].value = '';
+                }
+            });
+
+            function fieldsValidated() {
+                // verify only one field is filled
+                let populated = 0;
+                let filledField = null;
+                if(H.value !== '') {
+                    populated++;
+                    filledField = 'H';
+                }
+                if(OH.value !== '') {
+                    populated++;
+                    filledField = 'OH';
+                }
+                if(pH.value !== '') {
+                    populated++;
+                    filledField = 'pH';
+                }
+                if(pOH.value !== '') {
+                    populated++;
+                    filledField = 'pOH';
+                }
+                if(populated !== 1)
+                    return {valid: false};
+                
+                // console.log('pop ',populated);
+                // console.log('ff ',filledField);
+                // console.log('val ',window[filledField].value)
+
+                //verify filled field has a number
+                if(isNaN(window[filledField].value)) {
+                    return {valid: false};
+                }
+                else {
+                    return {valid: true, filledField: filledField};
+                }
+            }
+
+            function calculateField(from, to) {
+                
+                //Starting with H or OH
+
+                if((from === 'H' && to === 'OH') || (from === 'OH' && to === 'H')) {
+                    return Math.pow(10,-14)/num(from);
+                }
+
+                if((from === 'OH' && to === 'pOH') || (from === 'H' && to === 'pH')) {
+                    return -Math.log10(num(from));
+                }
+
+                if((from === 'OH' && to === 'pH') || (from === 'H' && to === 'pOH')) {
+                    return -Math.log10(  Math.pow(10,-14)/num(from)  );
+                }
+
+                //Starting with pH or pOH
+
+                if((from === 'pH' && to === 'pOH') || (from === 'pOH' && to === 'pH')) {
+                    return 14 - num(from);
+                }
+
+                if((from === 'pH' && to === 'H') || (from === 'pOH' && to === 'OH')) {
+                    return Math.pow(10,-num(from));
+                }
+
+                if( (from === 'pH' && to === 'OH') || (from === 'pOH' && to === 'H')) {
+                    return Math.pow(10,-(  14 - num(from)  ));
+                }
+
+                return 'case not specified';
+            }
+
+            function num(field) {
+                return parseFloat(window[field].value);
+            }
+
+        </script>
+    </body>
+</html>
