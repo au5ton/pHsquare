@@ -139,11 +139,11 @@
             }
 
             function calculateField(from, to) {
-                
+                let decimals = 8;
                 //Starting with H or OH
 
                 if((from === 'H' && to === 'OH') || (from === 'OH' && to === 'H')) {
-                    return Math.pow(10,-14)/num(from);
+                    return (Math.pow(10,-14)/num(from)).toExponential(decimals);
                 }
 
                 if((from === 'OH' && to === 'pOH') || (from === 'H' && to === 'pH')) {
@@ -161,11 +161,11 @@
                 }
 
                 if((from === 'pH' && to === 'H') || (from === 'pOH' && to === 'OH')) {
-                    return Math.pow(10,-num(from));
+                    return (Math.pow(10,-num(from))).toExponential(decimals);
                 }
 
                 if( (from === 'pH' && to === 'OH') || (from === 'pOH' && to === 'H')) {
-                    return Math.pow(10,-(  14 - num(from)  ));
+                    return (Math.pow(10,-(  14 - num(from)  ))).toExponential(decimals);
                 }
 
                 return 'case not specified';
